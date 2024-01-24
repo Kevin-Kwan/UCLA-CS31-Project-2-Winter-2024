@@ -17,6 +17,7 @@
 
 
 // Include necessary libraries
+using namespace std;
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -27,14 +28,14 @@ struct SalesTaxDetails {
     double stateTaxRate;
     double avgLocalTaxRate;
     double levy;
-    std::string freeTaxMonth;
+    string freeTaxMonth;
     int freeTaxDayStart;
     int freeTaxDayEnd;
 };
 
 // Sales Tax Table from /ProjectResources/Sales_Tax_Table.pdf
 // State, State Tax Rate, Average Local Tax Rate, Levy, Free Tax Month, Free Tax Day Start (inclusive), Free Tax Day End (inclusive)
-std::unordered_map<std::string, SalesTaxDetails> salesTaxTable = {
+unordered_map<string, SalesTaxDetails> salesTaxTable = {
     {"Alabama", {4.00, 5.14, 0.00, "", 0, 0}},
     {"Alabama", {4.00, 5.14, 0.00, "July", 15, 17}},
     {"Alaska", {0.00, 1.43, 0.00, "", 0, 0}},
@@ -89,50 +90,50 @@ std::unordered_map<std::string, SalesTaxDetails> salesTaxTable = {
 };
 
 // Set of valid months
-std::set<std::string> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+set<string> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 // This function is used to get the user input for state name, purchase amount, month, day, and year.
-void getUserInput(std::string& stateName, double& purchaseAmount, std::string& month, int& day, int& year) {
-    std::cout << "State Name: ";
-    std::getline(std::cin, stateName);
-    std::cout << "Purchase amount: ";
-    std::cin >> purchaseAmount;
-    std::cout << "Provide the month: ";
-    std::cin >> month;
-    std::cout << "Provide the day: ";
-    std::cin >> day;
-    std::cout << "Provide the year: ";
-    std::cin >> year;
+void getUserInput(string& stateName, double& purchaseAmount, string& month, int& day, int& year) {
+    cout << "State Name: ";
+    getline(cin, stateName);
+    cout << "Purchase amount: ";
+    cin >> purchaseAmount;
+    cout << "Provide the month: ";
+    cin >> month;
+    cout << "Provide the day: ";
+    cin >> day;
+    cout << "Provide the year: ";
+    cin >> year;
 }
 
 // This function is used to validate the user input. It checks if the state name exists in the sales tax table,
 // if the purchase amount is greater than 0, if the month is valid, if the day is between 1 and 31, and if the year is between 1 and 2025.
-bool validateInput(const std::string& stateName, double purchaseAmount, const std::string& month, int day, int year) {
+bool validateInput(const string& stateName, double purchaseAmount, const string& month, int day, int year) {
     // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
     if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
     {
-        std::cout << "Invalid state name!\n";
+        cout << "Invalid state name!\n";
         return false;
     }
     
     if (purchaseAmount <= 0) {
-        std::cout << "Invalid purchase amount!\n";
+        cout << "Invalid purchase amount!\n";
         return false;
     }
 
     // Should be O(log n), but since the set of months is a fixed size of 12, we can consider this O(1)
     if (months.find(month) == months.end()) {
-        std::cout << "Invalid month!\n";
+        cout << "Invalid month!\n";
         return false;
     }
 
     if (day < 1 || day > 31) {
-        std::cout << "Invalid day!\n";
+        cout << "Invalid day!\n";
         return false;
     }
 
     if (year < 1 || year > 2025) {
-        std::cout << "Invalid year!\n";
+        cout << "Invalid year!\n";
         return false;
     }
 
@@ -143,14 +144,14 @@ bool validateInput(const std::string& stateName, double purchaseAmount, const st
 // This function is used to calculate the total payment based on the state name, purchase amount, month, and day.
 // It first gets the tax details for the state. Then it checks if the purchase is made during the tax-free period.
 // If it is, then no tax is applied. Otherwise, the state tax, local tax, and levy are applied to the purchase amount.
-double calculateTotalPayment(const std::string& stateName, double purchaseAmount, const std::string& month, int day) {
+double calculateTotalPayment(const string& stateName, double purchaseAmount, const string& month, int day) {
     // Should be all O(1) because we are just doing lookups
     // Get tax details
     double stateTaxRate = salesTaxTable[stateName].stateTaxRate;
     double avgLocalTaxRate = salesTaxTable[stateName].avgLocalTaxRate;
     double levy = salesTaxTable[stateName].levy;
     // Get free tax month and day
-    std::string freeTaxMonth = salesTaxTable[stateName].freeTaxMonth;
+    string freeTaxMonth = salesTaxTable[stateName].freeTaxMonth;
     int freeTaxDayStart = salesTaxTable[stateName].freeTaxDayStart;
     int freeTaxDayEnd = salesTaxTable[stateName].freeTaxDayEnd;
 
@@ -165,7 +166,7 @@ double calculateTotalPayment(const std::string& stateName, double purchaseAmount
 
 int main() {
 
-    std::string stateName, month;
+    string stateName, month;
     double purchaseAmount;
     int day, year;
 
@@ -180,6 +181,6 @@ int main() {
     // Calculate total payment
     double totalPayment = calculateTotalPayment(stateName, purchaseAmount, month, day);
 
-    std::cout << std::fixed << std::setprecision(2) << "Please pay a total of $" << totalPayment << "\n";
+    cout << fixed << setprecision(2) << "Please pay a total of $" << totalPayment << "\n";
     return 0;
 }
