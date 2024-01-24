@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-This was written in about an hour.
+This was written in about an hour or two.
 
 This is my own modified implementation of the assignment for the purpose of self-learning C++ and practice C++ programming.
 
