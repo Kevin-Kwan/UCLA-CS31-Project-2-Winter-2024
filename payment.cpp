@@ -23,7 +23,7 @@
 #include <map>
 #include <set>
 
-// Sales Tax Table from /Project2Instructions/Sales_Tax_Table.pdf
+// Sales Tax Table from /ProjectResources/Sales_Tax_Table.pdf
 // State, State Tax Rate, Average Local Tax Rate, Levy, Free Tax Month, Free Tax Day Start (inclusive), Free Tax Day End (inclusive)
 std::map<std::string, std::tuple<double, double, double, std::string, int, int>> salesTaxTable = {
     std::make_pair("Alabama", std::make_tuple(4.00, 5.14, 0.00, "", 0, 0)),
