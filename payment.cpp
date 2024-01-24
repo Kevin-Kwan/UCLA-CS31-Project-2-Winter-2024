@@ -1,4 +1,4 @@
-// **************************************************************************
+// ***************************************************************
 // "Sales Tax Payment Calculator"
 // Written by Kevin Kwan @ Georgia Institute of Technology
 // The Importance of Self-Study: To learn C++ and practice C++ programming
@@ -13,7 +13,7 @@
 // I am not responsible for any mistakes or errors in this program.
 // Use at your own risk.
 // 
-// **************************************************************************
+// ***************************************************************
 
 
 // Include necessary libraries
@@ -91,7 +91,7 @@ std::unordered_map<std::string, SalesTaxDetails> salesTaxTable = {
 // Set of valid months
 std::set<std::string> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
-
+// This function is used to get the user input for state name, purchase amount, month, day, and year.
 void getUserInput(std::string& stateName, double& purchaseAmount, std::string& month, int& day, int& year) {
     std::cout << "State Name: ";
     std::getline(std::cin, stateName);
@@ -105,6 +105,8 @@ void getUserInput(std::string& stateName, double& purchaseAmount, std::string& m
     std::cin >> year;
 }
 
+// This function is used to validate the user input. It checks if the state name exists in the sales tax table,
+// if the purchase amount is greater than 0, if the month is valid, if the day is between 1 and 31, and if the year is between 1 and 2025.
 bool validateInput(const std::string& stateName, double purchaseAmount, const std::string& month, int day, int year) {
     // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
     if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
@@ -113,7 +115,6 @@ bool validateInput(const std::string& stateName, double purchaseAmount, const st
         return false;
     }
     
-
     if (purchaseAmount <= 0) {
         std::cout << "Invalid purchase amount!\n";
         return false;
@@ -138,6 +139,10 @@ bool validateInput(const std::string& stateName, double purchaseAmount, const st
     return true;
 }
 
+
+// This function is used to calculate the total payment based on the state name, purchase amount, month, and day.
+// It first gets the tax details for the state. Then it checks if the purchase is made during the tax-free period.
+// If it is, then no tax is applied. Otherwise, the state tax, local tax, and levy are applied to the purchase amount.
 double calculateTotalPayment(const std::string& stateName, double purchaseAmount, const std::string& month, int day) {
     // Should be all O(1) because we are just doing lookups
     // Get tax details
