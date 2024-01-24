@@ -20,63 +20,72 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <map>
+#include <unordered_map>
 #include <set>
+
+struct SalesTaxDetails {
+    double stateTaxRate;
+    double avgLocalTaxRate;
+    double levy;
+    std::string freeTaxMonth;
+    int freeTaxDayStart;
+    int freeTaxDayEnd;
+};
 
 // Sales Tax Table from /ProjectResources/Sales_Tax_Table.pdf
 // State, State Tax Rate, Average Local Tax Rate, Levy, Free Tax Month, Free Tax Day Start (inclusive), Free Tax Day End (inclusive)
-std::map<std::string, std::tuple<double, double, double, std::string, int, int>> salesTaxTable = {
-    std::make_pair("Alabama", std::make_tuple(4.00, 5.14, 0.00, "", 0, 0)),
-    std::make_pair("Alabama", std::make_tuple(4.00, 5.14, 0.00, "July", 15, 17)),
-    std::make_pair("Alaska", std::make_tuple(0.00, 1.43, 0.00, "", 0, 0)),
-    std::make_pair("Arizona", std::make_tuple(5.60, 2.77, 0.00, "", 0, 0)),
-    std::make_pair("Arkansas", std::make_tuple(6.50, 2.93, 0.00, "August", 6, 7)),
-    std::make_pair("California", std::make_tuple(7.25, 1.31, 1.00, "", 0, 0)),
-    std::make_pair("Colorado", std::make_tuple(2.90, 4.73, 0.00, "", 0, 0)),
-    std::make_pair("Connecticut", std::make_tuple(6.35, 0.00, 0.00, "August", 21, 27)),
-    std::make_pair("Delaware", std::make_tuple(0.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Florida", std::make_tuple(6.00, 1.05, 0.00, "", 0, 0)),
-    std::make_pair("Georgia", std::make_tuple(4.00, 3.29, 0.00, "", 0, 0)),
-    std::make_pair("Hawaii", std::make_tuple(4.00, 0.41, 0.00, "", 0, 0)),
-    std::make_pair("Idaho", std::make_tuple(6.00, 0.03, 0.00, "", 0, 0)),
-    std::make_pair("Illinois", std::make_tuple(6.25, 2.49, 0.00, "", 0, 0)),
-    std::make_pair("Indiana", std::make_tuple(7.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Iowa", std::make_tuple(6.00, 0.82, 0.00, "August", 5, 6)),
-    std::make_pair("Kansas", std::make_tuple(6.50, 2.17, 0.00, "", 0, 0)),
-    std::make_pair("Kentucky", std::make_tuple(6.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Louisiana", std::make_tuple(4.45, 5.00, 0.00, "", 0, 0)),
-    std::make_pair("Maine", std::make_tuple(5.50, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Maryland", std::make_tuple(6.00, 0.00, 0.00, "August", 14, 20)),
-    std::make_pair("Massachusetts", std::make_tuple(6.25, 0.00, 0.00, "August", 14, 15)),
-    std::make_pair("Michigan", std::make_tuple(6.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Minnesota", std::make_tuple(6.88, 0.55, 0.00, "", 0, 0)),
-    std::make_pair("Mississippi", std::make_tuple(7.00, 0.07, 0.00, "July", 29, 30)),
-    std::make_pair("Missouri", std::make_tuple(4.23, 3.90, 0.00, "April", 19, 25)),
-    std::make_pair("Montana", std::make_tuple(0.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Nebraska", std::make_tuple(5.50, 1.35, 0.00, "", 0, 0)),
-    std::make_pair("Nevada", std::make_tuple(6.85, 1.29, 0.00, "August", 5, 7)),
-    std::make_pair("New Hampshire", std::make_tuple(0.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("New Jersey", std::make_tuple(6.63, -0.03, 0.00, "", 0, 0)),
-    std::make_pair("New Mexico", std::make_tuple(5.13, 2.69, 0.00, "", 0, 0)),
-    std::make_pair("New York", std::make_tuple(4.00, 4.49, 0.00, "", 0, 0)),
-    std::make_pair("North Carolina", std::make_tuple(4.75, 2.22, 0.00, "", 0, 0)),
-    std::make_pair("North Dakota", std::make_tuple(5.00, 1.85, 0.00, "", 0, 0)),
-    std::make_pair("Ohio", std::make_tuple(5.75, 1.42, 0.00, "August", 5, 7)),
-    std::make_pair("Oklahoma", std::make_tuple(4.50, 4.42, 0.00, "August", 6, 8)),
-    std::make_pair("Oregon", std::make_tuple(0.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("Pennsylvania", std::make_tuple(6.00, 0.34, 0.00, "", 0, 0)),
-    std::make_pair("Rhode Island", std::make_tuple(7.00, 0.00, 0.00, "", 0, 0)),
-    std::make_pair("South Carolina", std::make_tuple(6.00, 1.43, 0.00, "August", 5, 7)),
-    std::make_pair("South Dakota", std::make_tuple(4.50, 1.90, 0.00, "", 0, 0)),
-    std::make_pair("Tennessee", std::make_tuple(7.00, 2.47, 0.00, "July", 29, 31)),
-    std::make_pair("Texas", std::make_tuple(6.25, 1.94, 0.00, "August", 5, 7)),
-    std::make_pair("Utah", std::make_tuple(5.95, 0.99, 1.25, "", 0, 0)),
-    std::make_pair("Vermont", std::make_tuple(6.00, 0.18, 0.00, "", 0, 0)),
-    std::make_pair("Virginia", std::make_tuple(5.30, 0.35, 1.00, "", 0, 0)),
-    std::make_pair("Washington", std::make_tuple(6.50, 2.67, 0.00, "", 0, 0)),
-    std::make_pair("West Virginia", std::make_tuple(6.00, 0.39, 0.00, "August", 5, 7)),
-    std::make_pair("Wisconsin", std::make_tuple(5.00, 0.44, 0.00, "", 0, 0)),
-    std::make_pair("Wyoming", std::make_tuple(4.00, 1.36, 0.00, "", 0, 0)),
+std::unordered_map<std::string, SalesTaxDetails> salesTaxTable = {
+    {"Alabama", {4.00, 5.14, 0.00, "", 0, 0}},
+    {"Alabama", {4.00, 5.14, 0.00, "July", 15, 17}},
+    {"Alaska", {0.00, 1.43, 0.00, "", 0, 0}},
+    {"Arizona", {5.60, 2.77, 0.00, "", 0, 0}},
+    {"Arkansas", {6.50, 2.93, 0.00, "August", 6, 7}},
+    {"California", {7.25, 1.31, 1.00, "", 0, 0}},
+    {"Colorado", {2.90, 4.73, 0.00, "", 0, 0}},
+    {"Connecticut", {6.35, 0.00, 0.00, "August", 21, 27}},
+    {"Delaware", {0.00, 0.00, 0.00, "", 0, 0}},
+    {"Florida", {6.00, 1.05, 0.00, "", 0, 0}},
+    {"Georgia", {4.00, 3.29, 0.00, "", 0, 0}},
+    {"Hawaii", {4.00, 0.41, 0.00, "", 0, 0}},
+    {"Idaho", {6.00, 0.03, 0.00, "", 0, 0}},
+    {"Illinois", {6.25, 2.49, 0.00, "", 0, 0}},
+    {"Indiana", {7.00, 0.00, 0.00, "", 0, 0}},
+    {"Iowa", {6.00, 0.82, 0.00, "August", 5, 6}},
+    {"Kansas", {6.50, 2.17, 0.00, "", 0, 0}},
+    {"Kentucky", {6.00, 0.00, 0.00, "", 0, 0}},
+    {"Louisiana", {4.45, 5.00, 0.00, "", 0, 0}},
+    {"Maine", {5.50, 0.00, 0.00, "", 0, 0}},
+    {"Maryland", {6.00, 0.00, 0.00, "August", 14, 20}},
+    {"Massachusetts", {6.25, 0.00, 0.00, "August", 14, 15}},
+    {"Michigan", {6.00, 0.00, 0.00, "", 0, 0}},
+    {"Minnesota", {6.88, 0.55, 0.00, "", 0, 0}},
+    {"Mississippi", {7.00, 0.07, 0.00, "July", 29, 30}},
+    {"Missouri", {4.23, 3.90, 0.00, "April", 19, 25}},
+    {"Montana", {0.00, 0.00, 0.00, "", 0, 0}},
+    {"Nebraska", {5.50, 1.35, 0.00, "", 0, 0}},
+    {"Nevada", {6.85, 1.29, 0.00, "August", 5, 7}},
+    {"New Hampshire", {0.00, 0.00, 0.00, "", 0, 0}},
+    {"New Jersey", {6.63, -0.03, 0.00, "", 0, 0}},
+    {"New Mexico", {5.13, 2.69, 0.00, "", 0, 0}},
+    {"New York", {4.00, 4.49, 0.00, "", 0, 0}},
+    {"North Carolina", {4.75, 2.22, 0.00, "", 0, 0}},
+    {"North Dakota", {5.00, 1.85, 0.00, "", 0, 0}},
+    {"Ohio", {5.75, 1.42, 0.00, "August", 5, 7}},
+    {"Oklahoma", {4.50, 4.42, 0.00, "August", 6, 8}},
+    {"Oregon", {0.00, 0.00, 0.00, "", 0, 0}},
+    {"Pennsylvania", {6.00, 0.34, 0.00, "", 0, 0}},
+    {"Rhode Island", {7.00, 0.00, 0.00, "", 0, 0}},
+    {"South Carolina", {6.00, 1.43, 0.00, "August", 5, 7}},
+    {"South Dakota", {4.50, 1.90, 0.00, "", 0, 0}},
+    {"Tennessee", {7.00, 2.47, 0.00, "July", 29, 31}},
+    {"Texas", {6.25, 1.94, 0.00, "August", 5, 7}},
+    {"Utah", {5.95, 0.99, 1.25, "", 0, 0}},
+    {"Vermont", {6.00, 0.18, 0.00, "", 0, 0}},
+    {"Virginia", {5.30, 0.35, 1.00, "", 0, 0}},
+    {"Washington", {6.50, 2.67, 0.00, "", 0, 0}},
+    {"West Virginia", {6.00, 0.39, 0.00, "August", 5, 7}},
+    {"Wisconsin", {5.00, 0.44, 0.00, "", 0, 0}},
+    {"Wyoming", {4.00, 1.36, 0.00, "", 0, 0}},
 };
 
 // Set of valid months
@@ -97,7 +106,7 @@ void getUserInput(std::string& stateName, double& purchaseAmount, std::string& m
 }
 
 bool validateInput(const std::string& stateName, double purchaseAmount, const std::string& month, int day, int year) {
-    // Should be O(logn), but since the set of states is a fixed size of 50, we can consider this O(1)
+    // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
     if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
     {
         std::cout << "Invalid state name!\n";
@@ -110,7 +119,7 @@ bool validateInput(const std::string& stateName, double purchaseAmount, const st
         return false;
     }
 
-    // Should be O(logn), but since the set of months is a fixed size of 12, we can consider this O(1)
+    // Should be O(log n), but since the set of months is a fixed size of 12, we can consider this O(1)
     if (months.find(month) == months.end()) {
         std::cout << "Invalid month!\n";
         return false;
@@ -132,13 +141,13 @@ bool validateInput(const std::string& stateName, double purchaseAmount, const st
 double calculateTotalPayment(const std::string& stateName, double purchaseAmount, const std::string& month, int day) {
     // Should be all O(1) because we are just doing lookups
     // Get tax details
-    double stateTaxRate = std::get<0>(salesTaxTable[stateName]);
-    double avgLocalTaxRate = std::get<1>(salesTaxTable[stateName]);
-    double levy = std::get<2>(salesTaxTable[stateName]);
+    double stateTaxRate = salesTaxTable[stateName].stateTaxRate;
+    double avgLocalTaxRate = salesTaxTable[stateName].avgLocalTaxRate;
+    double levy = salesTaxTable[stateName].levy;
     // Get free tax month and day
-    std::string freeTaxMonth = std::get<3>(salesTaxTable[stateName]);
-    int freeTaxDayStart = std::get<4>(salesTaxTable[stateName]);
-    int freeTaxDayEnd = std::get<5>(salesTaxTable[stateName]);
+    std::string freeTaxMonth = salesTaxTable[stateName].freeTaxMonth;
+    int freeTaxDayStart = salesTaxTable[stateName].freeTaxDayStart;
+    int freeTaxDayEnd = salesTaxTable[stateName].freeTaxDayEnd;
 
     if (month == freeTaxMonth && day >= freeTaxDayStart && day <= freeTaxDayEnd) {
         // No tax applied
