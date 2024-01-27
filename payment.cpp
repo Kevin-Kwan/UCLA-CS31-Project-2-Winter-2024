@@ -36,7 +36,6 @@ struct SalesTaxDetails {
 // Sales Tax Table from /ProjectResources/Sales_Tax_Table.pdf
 // State, State Tax Rate, Average Local Tax Rate, Levy, Free Tax Month, Free Tax Day Start (inclusive), Free Tax Day End (inclusive)
 unordered_map<string, SalesTaxDetails> salesTaxTable = {
-    {"Alabama", {4.00, 5.14, 0.00, "", 0, 0}},
     {"Alabama", {4.00, 5.14, 0.00, "July", 15, 17}},
     {"Alaska", {0.00, 1.43, 0.00, "", 0, 0}},
     {"Arizona", {5.60, 2.77, 0.00, "", 0, 0}},
@@ -106,6 +105,45 @@ void getUserInput(string& stateName, string& purchaseAmountStr, string& month, s
     getline(cin, yearStr);
 }
 
+bool validateRange(double value, double min, double max) {
+    if (value < min || value > max) {
+        return false;
+    }
+    return true;
+}
+
+bool validatePurchaseAmount(const string& purchaseAmount) {
+    try {
+        double purchaseAmountDouble = stod(purchaseAmount);
+        if (purchaseAmountDouble <= 0) {
+            return false;
+        }
+    } catch (const invalid_argument& e) {
+        return false;
+    }
+    return true;
+}
+
+bool validateDay(const string& day) {
+    try {
+        int dayInt = stoi(day);
+        return validateRange(dayInt, 1, 31);
+    } catch (const invalid_argument& e) {
+        return false;
+    }
+    return true;
+}
+
+bool validateYear(const string& year) {
+    try {
+        int yearInt = stoi(year);
+        return validateRange(yearInt, 1, 2025);
+    } catch (const invalid_argument& e) {
+        return false;
+    }
+    return true;
+}
+
 // This function is used to validate the user input. It checks if the state name exists in the sales tax table,
 // if the purchase amount is greater than 0, if the month is valid, if the day is between 1 and 31, and if the year is between 1 and 2025.
 bool validateInput(const string& stateName, const string& purchaseAmount, const string& month, const string& day, const string& year) {
@@ -116,14 +154,7 @@ bool validateInput(const string& stateName, const string& purchaseAmount, const 
         return false;
     }
 
-    // check if purchase amount is a valid double
-    try {
-        double purchaseAmountDouble = stod(purchaseAmount);
-        if (purchaseAmountDouble <= 0) {
-            cout << "Invalid amount!\n";
-            return false;
-        }
-    } catch (const invalid_argument& e) {
+    if (!validatePurchaseAmount(purchaseAmount)) {
         cout << "Invalid amount!\n";
         return false;
     }
@@ -134,26 +165,12 @@ bool validateInput(const string& stateName, const string& purchaseAmount, const 
         return false;
     }
 
-    // check if day is a valid integer
-    try {
-        int dayInt = stoi(day);
-        if (dayInt < 1 || dayInt > 31) {
-            cout << "Invalid day!\n";
-            return false;
-        }
-    } catch (const invalid_argument& e) {
+    if (!validateDay(day)) {
         cout << "Invalid day!\n";
         return false;
     }
 
-    // check if year is a valid integer
-    try {
-        int yearInt = stoi(year);
-        if (yearInt < 1 || yearInt > 2025) {
-            cout << "Invalid year!\n";
-            return false;
-        }
-    } catch (const invalid_argument& e) {
+    if (!validateYear(year)) {
         cout << "Invalid year!\n";
         return false;
     }
