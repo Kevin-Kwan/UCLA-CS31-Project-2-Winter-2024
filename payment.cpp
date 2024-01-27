@@ -98,8 +98,9 @@ void getUserInput(string& stateName, double& purchaseAmount, string& month, int&
     getline(cin, stateName);
     cout << "Purchase amount: ";
     cin >> purchaseAmount;
+    cin.ignore();
     cout << "Provide the month: ";
-    cin >> month;
+    getline(cin, month);
     cout << "Provide the day: ";
     cin >> day;
     cout << "Provide the year: ";
@@ -112,12 +113,12 @@ bool validateInput(const string& stateName, double purchaseAmount, const string&
     // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
     if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
     {
-        cout << "Invalid state name!\n";
+        cout << "Invalid state!\n";
         return false;
     }
     
     if (purchaseAmount <= 0) {
-        cout << "Invalid purchase amount!\n";
+        cout << "Invalid amount!\n";
         return false;
     }
 
