@@ -161,7 +161,7 @@ double calculateTotalPayment(const string& stateName, double purchaseAmount, con
         return purchaseAmount;
     } else {
         // Tax applied
-        return purchaseAmount + (purchaseAmount * stateTaxRate / 100) + (purchaseAmount * avgLocalTaxRate / 100) + (purchaseAmount * levy / 100);
+        return purchaseAmount * (1 + stateTaxRate / 100 + avgLocalTaxRate / 100 + levy / 100);
     }
 }
 
