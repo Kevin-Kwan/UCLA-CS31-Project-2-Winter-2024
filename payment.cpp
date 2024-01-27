@@ -93,31 +93,37 @@ unordered_map<string, SalesTaxDetails> salesTaxTable = {
 set<string> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 // This function is used to get the user input for state name, purchase amount, month, day, and year.
-void getUserInput(string& stateName, double& purchaseAmount, string& month, int& day, int& year) {
+void getUserInput(string& stateName, string& purchaseAmountStr, string& month, string& dayStr, string& yearStr) {
     cout << "State Name: ";
     getline(cin, stateName);
     cout << "Purchase amount: ";
-    cin >> purchaseAmount;
-    cin.ignore();
+    getline(cin, purchaseAmountStr);
     cout << "Provide the month: ";
     getline(cin, month);
     cout << "Provide the day: ";
-    cin >> day;
+    getline(cin, dayStr);
     cout << "Provide the year: ";
-    cin >> year;
+    getline(cin, yearStr);
 }
 
 // This function is used to validate the user input. It checks if the state name exists in the sales tax table,
 // if the purchase amount is greater than 0, if the month is valid, if the day is between 1 and 31, and if the year is between 1 and 2025.
-bool validateInput(const string& stateName, double purchaseAmount, const string& month, int day, int year) {
+bool validateInput(const string& stateName, const string& purchaseAmount, const string& month, const string& day, const string& year) {
     // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
     if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
     {
         cout << "Invalid state!\n";
         return false;
     }
-    
-    if (purchaseAmount <= 0) {
+
+    // check if purchase amount is a valid double
+    try {
+        double purchaseAmountDouble = stod(purchaseAmount);
+        if (purchaseAmountDouble <= 0) {
+            cout << "Invalid amount!\n";
+            return false;
+        }
+    } catch (const invalid_argument& e) {
         cout << "Invalid amount!\n";
         return false;
     }
@@ -128,12 +134,26 @@ bool validateInput(const string& stateName, double purchaseAmount, const string&
         return false;
     }
 
-    if (day < 1 || day > 31) {
+    // check if day is a valid integer
+    try {
+        int dayInt = stoi(day);
+        if (dayInt < 1 || dayInt > 31) {
+            cout << "Invalid day!\n";
+            return false;
+        }
+    } catch (const invalid_argument& e) {
         cout << "Invalid day!\n";
         return false;
     }
 
-    if (year < 1 || year > 2025) {
+    // check if year is a valid integer
+    try {
+        int yearInt = stoi(year);
+        if (yearInt < 1 || yearInt > 2025) {
+            cout << "Invalid year!\n";
+            return false;
+        }
+    } catch (const invalid_argument& e) {
         cout << "Invalid year!\n";
         return false;
     }
@@ -167,9 +187,7 @@ double calculateTotalPayment(const string& stateName, double purchaseAmount, con
 
 int main() {
 
-    string stateName, month;
-    double purchaseAmount;
-    int day, year;
+    string stateName, month, purchaseAmount, day, year;
 
     // Collect all inputs from user
     getUserInput(stateName, purchaseAmount, month, day, year);
@@ -178,9 +196,12 @@ int main() {
     if (!validateInput(stateName, purchaseAmount, month, day, year)) {
         return 1;
     }
+    // convert purchase amount to double and day to int
+    double purchaseAmountDouble = stod(purchaseAmount);
+    int dayInt = stoi(day);
 
     // Calculate total payment
-    double totalPayment = calculateTotalPayment(stateName, purchaseAmount, month, day);
+    double totalPayment = calculateTotalPayment(stateName, purchaseAmountDouble, month, dayInt);
 
     cout << fixed << setprecision(2) << "Please pay a total of $" << totalPayment << "\n";
     return 0;
