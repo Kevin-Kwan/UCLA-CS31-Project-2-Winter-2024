@@ -1,5 +1,8 @@
 # Sales Tax Calculator (UCLA CS31 Winter 2024 Programming Assignment/Project 2 Implementation)
 
+## Results
+Scores 50/50 on the given testcases.
+
 ## Disclaimer
 
 This was written in about an hour or two.
