@@ -2,6 +2,8 @@
 
 ## Results
 Scores 50/50 on the given testcases.
+![image](https://github.com/Kevin-Kwan/UCLA-CS31-Project-2-Winter-2024/assets/51896555/fcbe9e38-9281-4a71-9b7f-4a7a5406126c)
+
 
 ## Disclaimer
 
