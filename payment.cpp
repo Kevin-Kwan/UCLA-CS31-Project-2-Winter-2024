@@ -105,6 +105,7 @@ void getUserInput(string& stateName, string& purchaseAmountStr, string& month, s
     getline(cin, yearStr);
 }
 
+// This function is used to validate if a value is within a range.
 bool validateRange(double value, double min, double max) {
     if (value < min || value > max) {
         return false;
@@ -112,10 +113,11 @@ bool validateRange(double value, double min, double max) {
     return true;
 }
 
-bool validatePurchaseAmount(const string& purchaseAmount) {
+// This function is used to validate if the string purchaseAmount can be converted to a double and if the double is greater than 0.
+bool validatePurchaseAmount(const string& purchaseAmount, double min = 0) {
     try {
         double purchaseAmountDouble = stod(purchaseAmount);
-        if (purchaseAmountDouble <= 0) {
+        if (purchaseAmountDouble <= min) {
             return false;
         }
     } catch (const invalid_argument& e) {
@@ -124,20 +126,22 @@ bool validatePurchaseAmount(const string& purchaseAmount) {
     return true;
 }
 
-bool validateDay(const string& day) {
+// This function is used to validate if the string day can be converted to an int and if the int is between 1 and 31.
+bool validateDay(const string& day, int min = 1, int max = 31) {
     try {
         int dayInt = stoi(day);
-        return validateRange(dayInt, 1, 31);
+        return validateRange(dayInt, min, max);
     } catch (const invalid_argument& e) {
         return false;
     }
     return true;
 }
 
-bool validateYear(const string& year) {
+// This function is used to validate if the string year can be converted to an int and if the int is between 1 and 2025.
+bool validateYear(const string& year, int min = 1, int max = 2025) {
     try {
         int yearInt = stoi(year);
-        return validateRange(yearInt, 1, 2025);
+        return validateRange(yearInt, min, max);
     } catch (const invalid_argument& e) {
         return false;
     }
