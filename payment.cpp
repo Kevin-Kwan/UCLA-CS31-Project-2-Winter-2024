@@ -35,6 +35,10 @@ struct SalesTaxDetails {
 
 // Sales Tax Table from /ProjectResources/Sales_Tax_Table.pdf
 // State, State Tax Rate, Average Local Tax Rate, Levy, Free Tax Month, Free Tax Day Start (inclusive), Free Tax Day End (inclusive)
+// I know a better implementation of this would be to use a database or xml file, iterate through the file, and populating this table.
+// That way, you don't even need to go through the code to update the tax table.
+// We can also change the struct to store an array of free tax months and days.
+// But for the sake of this assignment, and we already passed all the test cases, I will leave it as is.
 unordered_map<string, SalesTaxDetails> salesTaxTable = {
     {"Alabama", {4.00, 5.14, 0.00, "July", 15, 17}},
     {"Alaska", {0.00, 1.43, 0.00, "", 0, 0}},
