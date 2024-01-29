@@ -9,7 +9,7 @@ Scores 50/50 on the given testcases.
 
 This was written in about an hour or two.
 
-This is my own modified implementation of the assignment for the purpose of self-learning C++ and practice C++ programming.
+This is my own modified implementation of the assignment for the purpose of self-learning C++ and practicing C++ programming.
 
 I am not responsible for any mistakes or errors in this program.
 
