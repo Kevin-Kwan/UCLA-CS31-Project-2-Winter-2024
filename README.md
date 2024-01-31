@@ -1,10 +1,15 @@
 # Sales Tax Calculator (UCLA CS31 Winter 2024 Programming Assignment/Project 2 Implementation)
 
+## Results
+Scores 50/50 on the given testcases.
+![image](https://github.com/Kevin-Kwan/UCLA-CS31-Project-2-Winter-2024/assets/51896555/fcbe9e38-9281-4a71-9b7f-4a7a5406126c)
+
+
 ## Disclaimer
 
 This was written in about an hour or two.
 
-This is my own modified implementation of the assignment for the purpose of self-learning C++ and practice C++ programming.
+This is my own modified implementation of the assignment for the purpose of self-learning C++ and practicing C++ programming.
 
 I am not responsible for any mistakes or errors in this program.
 
