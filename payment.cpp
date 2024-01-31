@@ -6,15 +6,14 @@
 // UCLA CS31 Winter 2024 Project 2
 // UCLA CS31 Winter 2024 Programming Assignment 2
 // This program calculates the total payment for a purchase based on the state, purchase amount, and date of purchase.
-// 
+//
 // This program is written in C++ and compiled using g++.
-// Comments have been added for understanding and viewing pleasure. 
+// Comments have been added for understanding and viewing pleasure.
 //
 // I am not responsible for any mistakes or errors in this program.
 // Use at your own risk.
-// 
+//
 // ***************************************************************
-
 
 // Include necessary libraries
 using namespace std;
@@ -24,7 +23,8 @@ using namespace std;
 #include <unordered_map>
 #include <set>
 
-struct SalesTaxDetails {
+struct SalesTaxDetails
+{
     double stateTaxRate;
     double avgLocalTaxRate;
     double levy;
@@ -96,7 +96,8 @@ unordered_map<string, SalesTaxDetails> salesTaxTable = {
 set<string> months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 // This function is used to get the user input for state name, purchase amount, month, day, and year.
-void getUserInput(string& stateName, string& purchaseAmountStr, string& month, string& dayStr, string& yearStr) {
+void getUserInput(string &stateName, string &purchaseAmountStr, string &month, string &dayStr, string &yearStr)
+{
     cout << "State Name: ";
     getline(cin, stateName);
     cout << "Purchase amount: ";
@@ -110,43 +111,58 @@ void getUserInput(string& stateName, string& purchaseAmountStr, string& month, s
 }
 
 // This function is used to validate if a value is within a range.
-bool validateRange(double value, double min, double max) {
-    if (value < min || value > max) {
+bool validateRange(double value, double min, double max)
+{
+    if (value < min || value > max)
+    {
         return false;
     }
     return true;
 }
 
 // This function is used to validate if the string purchaseAmount can be converted to a double and if the double is greater than 0.
-bool validatePurchaseAmount(const string& purchaseAmount, double min = 0) {
-    try {
+bool validatePurchaseAmount(const string &purchaseAmount, double min = 0)
+{
+    try
+    {
         double purchaseAmountDouble = stod(purchaseAmount);
-        if (purchaseAmountDouble <= min) {
+        if (purchaseAmountDouble <= min)
+        {
             return false;
         }
-    } catch (const invalid_argument& e) {
+    }
+    catch (const invalid_argument &e)
+    {
         return false;
     }
     return true;
 }
 
 // This function is used to validate if the string day can be converted to an int and if the int is between 1 and 31.
-bool validateDay(const string& day, int min = 1, int max = 31) {
-    try {
+bool validateDay(const string &day, int min = 1, int max = 31)
+{
+    try
+    {
         int dayInt = stoi(day);
         return validateRange(dayInt, min, max);
-    } catch (const invalid_argument& e) {
+    }
+    catch (const invalid_argument &e)
+    {
         return false;
     }
     return true;
 }
 
 // This function is used to validate if the string year can be converted to an int and if the int is between 1 and 2025.
-bool validateYear(const string& year, int min = 1, int max = 2025) {
-    try {
+bool validateYear(const string &year, int min = 1, int max = 2025)
+{
+    try
+    {
         int yearInt = stoi(year);
         return validateRange(yearInt, min, max);
-    } catch (const invalid_argument& e) {
+    }
+    catch (const invalid_argument &e)
+    {
         return false;
     }
     return true;
@@ -154,43 +170,47 @@ bool validateYear(const string& year, int min = 1, int max = 2025) {
 
 // This function is used to validate the user input. It checks if the state name exists in the sales tax table,
 // if the purchase amount is greater than 0, if the month is valid, if the day is between 1 and 31, and if the year is between 1 and 2025.
-bool validateInput(const string& stateName, const string& purchaseAmount, const string& month, const string& day, const string& year) {
+bool validateInput(const string &stateName, const string &purchaseAmount, const string &month, const string &day, const string &year)
+{
     // Should be O(log n), but since the set of states is a fixed size of 50, we can consider this O(1)
-    if (salesTaxTable.find(stateName) == salesTaxTable.end()) 
+    if (salesTaxTable.find(stateName) == salesTaxTable.end())
     {
         cout << "Invalid state!\n";
         return false;
     }
 
-    if (!validatePurchaseAmount(purchaseAmount)) {
+    if (!validatePurchaseAmount(purchaseAmount))
+    {
         cout << "Invalid amount!\n";
         return false;
     }
 
     // Should be O(log n), but since the set of months is a fixed size of 12, we can consider this O(1)
-    if (months.find(month) == months.end()) {
+    if (months.find(month) == months.end())
+    {
         cout << "Invalid month!\n";
         return false;
     }
 
-    if (!validateDay(day)) {
+    if (!validateDay(day))
+    {
         cout << "Invalid day!\n";
         return false;
     }
 
-    if (!validateYear(year)) {
+    if (!validateYear(year))
+    {
         cout << "Invalid year!\n";
         return false;
     }
-
     return true;
 }
-
 
 // This function is used to calculate the total payment based on the state name, purchase amount, month, and day.
 // It first gets the tax details for the state. Then it checks if the purchase is made during the tax-free period.
 // If it is, then no tax is applied. Otherwise, the state tax, local tax, and levy are applied to the purchase amount.
-double calculateTotalPayment(const string& stateName, double purchaseAmount, const string& month, int day) {
+double calculateTotalPayment(const string &stateName, double purchaseAmount, const string &month, int day)
+{
     // Should be all O(1) because we are just doing lookups
     // Get tax details
     double stateTaxRate = salesTaxTable[stateName].stateTaxRate;
@@ -201,16 +221,20 @@ double calculateTotalPayment(const string& stateName, double purchaseAmount, con
     int freeTaxDayStart = salesTaxTable[stateName].freeTaxDayStart;
     int freeTaxDayEnd = salesTaxTable[stateName].freeTaxDayEnd;
 
-    if (month == freeTaxMonth && day >= freeTaxDayStart && day <= freeTaxDayEnd) {
+    if (month == freeTaxMonth && day >= freeTaxDayStart && day <= freeTaxDayEnd)
+    {
         // No tax applied
         return purchaseAmount;
-    } else {
+    }
+    else
+    {
         // Tax applied
         return purchaseAmount * (1 + stateTaxRate / 100 + avgLocalTaxRate / 100 + levy / 100);
     }
 }
 
-int main() {
+int main()
+{
 
     string stateName, month, purchaseAmount, day, year;
 
@@ -218,7 +242,8 @@ int main() {
     getUserInput(stateName, purchaseAmount, month, day, year);
 
     // Validate inputs
-    if (!validateInput(stateName, purchaseAmount, month, day, year)) {
+    if (!validateInput(stateName, purchaseAmount, month, day, year))
+    {
         return 1;
     }
     // convert purchase amount to double and day to int
